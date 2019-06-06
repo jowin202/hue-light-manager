@@ -135,12 +135,12 @@
      <x>0</x>
      <y>0</y>
      <width>761</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">
     <property name="title">
-     <string>Datei</string>
+     <string>Da&amp;tei</string>
     </property>
     <addaction name="actionSchlie_en"/>
    </widget>
@@ -156,12 +156,12 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionSchlie_en">
    <property name="text">
-    <string>Schließen</string>
+    <string>&amp;Schließen</string>
    </property>
   </action>
   <action name="actionInfo">
    <property name="text">
-    <string>Info</string>
+    <string>&amp;Info</string>
    </property>
   </action>
  </widget>

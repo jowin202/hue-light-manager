@@ -10,6 +10,15 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->tableWidget->hideColumn(6);
     this->ui->tableWidget->hideColumn(7);
     this->ui->line_hue_key->setText(settings.value("key").toString());
+    this->ui->line_hue_address->setText(settings.value("address").toString());
+
+    if (this->ui->line_hue_address->text().isEmpty())
+    {
+        this->on_pushButton_clicked(); // hue suchen
+    }
+
+    dia.setLabel(new QLabel("Drücken Sie den Button an der Hue Bridge"));
+    dia.setMaximum(30);
 }
 
 MainWindow::~MainWindow()
@@ -35,7 +44,13 @@ void MainWindow::getHueIP()
             QMessageBox box(this);
             box.setWindowTitle("Hinweis");
             box.setTextFormat(Qt::RichText);
-            box.setText("Die IP von der Hue Bridge kann auf folgender Seite ausgelesen werden:<br><a href='https://www.meethue.com/api/nupnp'>https://www.meethue.com/api/nupnp</a><br><br>Dort steht eine IP, die man in das Feld nebenan eintragen muss.<br><br>Jetzt könnte man fragen, warum ich das nicht vollautomatisch beim Programmstart mache: Hab ich gemacht! Es geht unter Linux aber meine Windows-Qt-Version kann kein HTTPS, weil ich an meiner Version rumgebastelt habe. Bis ich das in Ordnung gebracht habe, muss man das eben händisch eintragen.");
+            box.setText("Die IP von der Hue Bridge kann auf folgender Seite ausgelesen werden:"
+                        "<br><a href='https://www.meethue.com/api/nupnp'>https://www.meethue.com/api/nupnp</a><br><br>"
+                        "Dort steht eine IP, die man in das Feld nebenan eintragen muss.<br><br>"
+                        "Jetzt könnte man fragen, warum ich das nicht vollautomatisch beim Programmstart mache: "
+                        "Hab ich gemacht! Es geht unter Linux aber meine Windows-Qt-Version kann kein HTTPS, "
+                        "weil ich an meiner Version rumgebastelt habe. Bis ich das in Ordnung gebracht habe, "
+                        "muss man das eben händisch eintragen.");
             box.exec();
             return;
         }
@@ -178,6 +193,17 @@ void MainWindow::setBri(int light, int bri)
     connect(rep, SIGNAL(finished()), this, SLOT(on_pushButton_2_clicked())); //update list
 }
 
+void MainWindow::keyRequest()
+{
+    QJsonObject obj;
+    obj.insert("devicetype", "jowinapp");
+    QJsonDocument doc(obj);
+
+    QNetworkRequest req = QNetworkRequest(QUrl(QString("http://%1/api/").arg(this->ui->line_hue_address->text())));
+    QNetworkReply *rep = nam.post(req,doc.toJson());
+    connect(rep, SIGNAL(finished()), this, SLOT(recvKey()));
+}
+
 void MainWindow::recvKey()
 {
     QNetworkReply *rep = (QNetworkReply*)sender();
@@ -192,11 +218,26 @@ void MainWindow::recvKey()
         }
         if (error_type == 101)
         {
-            QMessageBox::critical(this, "Hinweis", "Bitte zuerst den Button auf der Hue Bridge drücken");
+            //QMessageBox::critical(this, "Hinweis", "Bitte zuerst den Button auf der Hue Bridge drücken");
+            //doing nothing
         }
         QString key = doc.array().first().toObject().value("success").toObject().value("username").toString();
         if (!key.isEmpty())
+        {
             this->ui->line_hue_key->setText(key);
+            this->timer.stop();
+        }
+    }
+}
+
+void MainWindow::timer_tick()
+{
+    qDebug() << "timer_tick";
+    this->dia.setValue(this->dia.value() + 1);
+    if (this->dia.value() == this->dia.maximum())
+    {
+        this->dia.close();
+        timer.stop();
     }
 }
 
@@ -249,14 +290,11 @@ void MainWindow::on_tableWidget_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    //Key
-    QJsonObject obj;
-    obj.insert("devicetype", "jowinapp");
-    QJsonDocument doc(obj);
-
-    QNetworkRequest req = QNetworkRequest(QUrl(QString("http://%1/api/").arg(this->ui->line_hue_address->text())));
-    QNetworkReply *rep = nam.post(req,doc.toJson());
-    connect(rep, SIGNAL(finished()), this, SLOT(recvKey()));
+    //Key holen
+    dia.show();
+    this->timer.setInterval(1000);
+    connect(&this->timer, SIGNAL(timeout()), this, SLOT(timer_tick()));
+    this->timer.start();
 }
 
 void MainWindow::on_line_hue_key_textChanged(const QString &arg1)
@@ -289,4 +327,9 @@ void MainWindow::on_actionInfo_triggered()
                 ""
                 "<br>Dauer bis zu diesem Stand des Programmes: 3 Stunden (mit Stoppuhr gemessen)");
     box.exec();
+}
+
+void MainWindow::on_line_hue_address_textChanged(const QString &arg1)
+{
+    settings.setValue("address", arg1);
 }

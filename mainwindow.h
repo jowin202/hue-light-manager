@@ -5,6 +5,7 @@
 #include <QtNetwork>
 #include <QColorDialog>
 #include <QInputDialog>
+#include <QProgressDialog>
 #include <QMessageBox>
 #include <QJsonDocument>
 #include <QDebug>
@@ -29,7 +30,10 @@ private slots:
     void setLightColor(int light, QColor col);
     void setOn(int light, bool on);
     void setBri(int light, int bri);
+
+    void keyRequest();
     void recvKey();
+    void timer_tick();
 
     void debugRequest();
 
@@ -46,10 +50,14 @@ private slots:
 
     void on_actionInfo_triggered();
 
+    void on_line_hue_address_textChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     QNetworkAccessManager nam;
     QSettings settings;
+    QTimer timer;
+    QProgressDialog dia;
 };
 
 #endif // MAINWINDOW_H
