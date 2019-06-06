@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>761</width>
-    <height>558</height>
+    <width>769</width>
+    <height>531</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,7 +35,7 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="button_get_ip">
         <property name="text">
          <string>Hue Suchen</string>
         </property>
@@ -68,62 +68,15 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="4">
-       <widget class="QTableWidget" name="tableWidget">
-        <property name="selectionBehavior">
-         <enum>QAbstractItemView::SelectRows</enum>
-        </property>
-        <attribute name="verticalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <column>
-         <property name="text">
-          <string>Name</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Typ</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Status</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Farbe</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Helligkeit</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>ColorLoop</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>UUID</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>id</string>
-         </property>
-        </column>
-       </widget>
-      </item>
       <item row="1" column="3">
        <widget class="QPushButton" name="pushButton_3">
         <property name="text">
          <string>Key holen</string>
         </property>
        </widget>
+      </item>
+      <item row="2" column="0" colspan="4">
+       <widget class="LightTable" name="table_lights" native="true"/>
       </item>
      </layout>
     </item>
@@ -134,7 +87,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>761</width>
+     <width>769</width>
      <height>30</height>
     </rect>
    </property>
@@ -166,6 +119,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>LightTable</class>
+   <extends>QWidget</extends>
+   <header>lighttable.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

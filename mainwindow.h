@@ -10,6 +10,8 @@
 #include <QJsonDocument>
 #include <QDebug>
 
+#include "huewrapper.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -23,13 +25,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
-    void getHueIP();
     void updateTable();
-    void setColorLoop(int light, bool loop);
-    void setLightColor(int light, QColor col);
-    void setOn(int light, bool on);
-    void setBri(int light, int bri);
 
     void keyRequest();
     void recvKey();
@@ -40,7 +36,6 @@ private slots:
     void on_pushButton_2_clicked();
 
 
-    void on_tableWidget_doubleClicked(const QModelIndex &index);
 
     void on_pushButton_3_clicked();
 
@@ -52,12 +47,15 @@ private slots:
 
     void on_line_hue_address_textChanged(const QString &arg1);
 
+    void on_button_get_ip_clicked();
+
 private:
     Ui::MainWindow *ui;
     QNetworkAccessManager nam;
     QSettings settings;
     QTimer timer;
     QProgressDialog *dia;
+    HueWrapper hue;
 };
 
 #endif // MAINWINDOW_H

@@ -13,8 +13,12 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    lighttable.cpp \
+    huewrapper.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    lighttable.h \
+    huewrapper.h
 
 FORMS    += mainwindow.ui
