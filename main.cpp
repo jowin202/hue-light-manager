@@ -5,9 +5,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QCoreApplication::setOrganizationName("JoWin");
-    QCoreApplication::setOrganizationDomain("jowin.at");
-    QCoreApplication::setApplicationName("JoWin Hue");
+    //QCoreApplication::setOrganizationName("JoWin");
+    //QCoreApplication::setOrganizationDomain("jowin.at");
+    QCoreApplication::setApplicationName("Hue");
 
     MainWindow w;
     w.show();

@@ -57,7 +57,7 @@ private:
     QNetworkAccessManager nam;
     QSettings settings;
     QTimer timer;
-    QProgressDialog dia;
+    QProgressDialog *dia;
 };
 
 #endif // MAINWINDOW_H

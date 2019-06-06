@@ -17,8 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
         this->on_pushButton_clicked(); // hue suchen
     }
 
-    dia.setLabel(new QLabel("Drücken Sie den Button an der Hue Bridge"));
-    dia.setMaximum(30);
+
+    this->timer.setInterval(1000);
+    connect(&this->timer, SIGNAL(timeout()), this, SLOT(timer_tick()));
+
 }
 
 MainWindow::~MainWindow()
@@ -214,7 +216,8 @@ void MainWindow::recvKey()
         int error_type = doc.array().first().toObject().value("error").toObject().value("type").toInt();
         if (rep->error() == QNetworkReply::HostNotFoundError)
         {
-            QMessageBox::critical(this, "Hinweis", "Hue Bridge nicht gefunden");
+            //QMessageBox::critical(this, "Hinweis", "Hue Bridge nicht gefunden");
+            qDebug() << "host not found";
         }
         if (error_type == 101)
         {
@@ -226,18 +229,23 @@ void MainWindow::recvKey()
         {
             this->ui->line_hue_key->setText(key);
             this->timer.stop();
+            this->dia->close(); //TODO: check if dia exists
         }
     }
 }
 
 void MainWindow::timer_tick()
 {
-    qDebug() << "timer_tick";
-    this->dia.setValue(this->dia.value() + 1);
-    if (this->dia.value() == this->dia.maximum())
+    if (this->dia->value() % 10 == 0)
+        this->keyRequest();
+    this->dia->setValue(this->dia->value() + 1);
+    qDebug() << "timer_tick " << dia->value();
+    if (this->dia->value() == this->dia->maximum() - 1)
     {
-        this->dia.close();
+        this->dia->close();
         timer.stop();
+        qDebug() << "dialog stopped";
+        this->keyRequest();
     }
 }
 
@@ -291,9 +299,13 @@ void MainWindow::on_tableWidget_doubleClicked(const QModelIndex &index)
 void MainWindow::on_pushButton_3_clicked()
 {
     //Key holen
-    dia.show();
-    this->timer.setInterval(1000);
-    connect(&this->timer, SIGNAL(timeout()), this, SLOT(timer_tick()));
+    dia = new QProgressDialog;
+    dia->setLabel(new QLabel("Drücken Sie den Button an der Hue Bridge"));
+    dia->setMaximum(30);
+    dia->setValue(0);
+    dia->setModal(true);
+    dia->show();
+    connect(dia, SIGNAL(canceled()), &this->timer, SLOT(stop()));
     this->timer.start();
 }
 
