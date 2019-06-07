@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->ui->stackedWidget->setCurrentIndex(0);
     this->ui->line_hue_key->setText(settings.value("key").toString());
     this->ui->line_hue_address->setText(settings.value("address").toString());
 
@@ -16,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
         hue.ipRequest();
     }
 
-
+    this->ui->table_lights->init(&this->hue);
+    this->ui->table_groups->init(&this->hue);
     this->timer.setInterval(1000);
     connect(&this->timer, SIGNAL(timeout()), this, SLOT(timer_tick()));
 
@@ -28,17 +30,6 @@ MainWindow::~MainWindow()
 }
 
 
-
-void MainWindow::updateTable()
-{
-    QNetworkReply *rep = (QNetworkReply*)sender();
-    if (rep != 0)
-    {
-        QByteArray json = rep->readAll();
-        this->ui->table_lights->update(json);
-    }
-
-}
 
 
 
@@ -109,10 +100,8 @@ void MainWindow::debugRequest()
 void MainWindow::on_pushButton_2_clicked()
 {
     //Liste Aktualisieren
-    QNetworkRequest req = QNetworkRequest(QUrl(QString("http://%1/api/%2/lights").arg(this->ui->line_hue_address->text()).arg(this->ui->line_hue_key->text())));
-    QNetworkReply *rep = nam.get(req);
-    connect(rep, SIGNAL(finished()), this, SLOT(updateTable()));
-
+    hue.doUpdateLights();
+    hue.doUpdateGroups();
 }
 
 
@@ -171,4 +160,16 @@ void MainWindow::on_line_hue_address_textChanged(const QString &arg1)
 void MainWindow::on_button_get_ip_clicked()
 {
     hue.ipRequest();
+}
+
+void MainWindow::on_radio_lights_toggled(bool checked)
+{
+    if (checked)
+        this->ui->stackedWidget->setCurrentIndex(0);
+}
+
+void MainWindow::on_radio_groups_toggled(bool checked)
+{
+    if (checked)
+        this->ui->stackedWidget->setCurrentIndex(1);
 }

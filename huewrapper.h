@@ -12,19 +12,27 @@ class HueWrapper : public QObject
 public:
     explicit HueWrapper(QObject *parent = nullptr);
 
-    void setColorLoop(int light, bool loop);
+    void setLightColorLoop(int light, bool loop);
+    void setGroupColorLoop(int group, bool loop);
     void setLightColor(int light, QColor col);
-    void setOn(int light, bool on);
-    void setBri(int light, int bri);
+    void setGroupColor(int group, QColor col);
+    void setLightOn(int light, bool on);
+    void setGroupOn(int group, bool on);
+    void setLightBri(int light, int bri);
+    void setGroupBri(int light, int bri);
 
     void ipRequest();
 
 public slots:
-    void sendUpdateSignal();
+    void doUpdateLights();
+    void doUpdateGroups();
+    void sendUpdateLightsSignal();
+    void sendUpdateGroupsSignal();
     void ipRequestFinished();
 
 signals:
-    void dataUpdated();
+    void dataLightsUpdated(QByteArray json);
+    void dataGroupsUpdated(QByteArray json);
     void ipFound(QString ip);
 
 public slots:

@@ -23,10 +23,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    HueWrapper hue;
 
 private slots:
-    void updateTable();
-
     void keyRequest();
     void recvKey();
     void timer_tick();
@@ -38,16 +37,13 @@ private slots:
 
 
     void on_pushButton_3_clicked();
-
     void on_line_hue_key_textChanged(const QString &arg1);
-
     void on_actionSchlie_en_triggered();
-
     void on_actionInfo_triggered();
-
     void on_line_hue_address_textChanged(const QString &arg1);
-
     void on_button_get_ip_clicked();
+    void on_radio_lights_toggled(bool checked);
+    void on_radio_groups_toggled(bool checked);
 
 private:
     Ui::MainWindow *ui;
@@ -55,7 +51,6 @@ private:
     QSettings settings;
     QTimer timer;
     QProgressDialog *dia;
-    HueWrapper hue;
 };
 
 #endif // MAINWINDOW_H

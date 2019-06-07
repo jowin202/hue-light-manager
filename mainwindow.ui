@@ -15,15 +15,26 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
+    <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="line_hue_address"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="line_hue_key">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string/>
+         <string>Hue Key:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="button_get_ip">
+        <property name="text">
+         <string>Hue Suchen</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="5">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Aktualisieren</string>
         </property>
        </widget>
       </item>
@@ -34,17 +45,10 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="button_get_ip">
+      <item row="1" column="5">
+       <widget class="QPushButton" name="pushButton_3">
         <property name="text">
-         <string>Hue Suchen</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>Aktualisieren</string>
+         <string>Key holen</string>
         </property>
        </widget>
       </item>
@@ -61,22 +65,53 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
+      <item row="2" column="0" colspan="6">
+       <widget class="QStackedWidget" name="stackedWidget">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="lights">
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0">
+           <widget class="LightTable" name="table_lights" native="true"/>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="groups">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="GroupTable" name="table_groups" native="true"/>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QRadioButton" name="radio_groups">
         <property name="text">
-         <string>Hue Key:</string>
+         <string>Gruppen</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="3">
-       <widget class="QPushButton" name="pushButton_3">
+      <item row="3" column="3">
+       <widget class="QRadioButton" name="radio_lights">
         <property name="text">
-         <string>Key holen</string>
+         <string>Lichter</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="4">
-       <widget class="LightTable" name="table_lights" native="true"/>
+      <item row="1" column="1" colspan="4">
+       <widget class="QLineEdit" name="line_hue_key">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1" colspan="4">
+       <widget class="QLineEdit" name="line_hue_address"/>
       </item>
      </layout>
     </item>
@@ -88,7 +123,7 @@
      <x>0</x>
      <y>0</y>
      <width>769</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuDatei">
@@ -124,6 +159,12 @@
    <class>LightTable</class>
    <extends>QWidget</extends>
    <header>lighttable.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>GroupTable</class>
+   <extends>QWidget</extends>
+   <header>grouptable.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
