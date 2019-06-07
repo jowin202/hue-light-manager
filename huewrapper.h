@@ -10,7 +10,7 @@ class HueWrapper : public QObject
 {
     Q_OBJECT
 public:
-    explicit HueWrapper(QObject *parent = nullptr);
+    explicit HueWrapper(QObject *parent = 0);
 
     void setLightColorLoop(int light, bool loop);
     void setGroupColorLoop(int group, bool loop);
