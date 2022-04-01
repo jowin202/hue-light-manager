@@ -122,7 +122,7 @@ void HueWrapper::setGroupBri(int group, int bri)
 
 void HueWrapper::ipRequest()
 {
-    QNetworkRequest req = QNetworkRequest(QUrl("https://www.meethue.com/api/nupnp"));
+    QNetworkRequest req = QNetworkRequest(QUrl("https://discovery.meethue.com"));
     QNetworkReply *rep = nam.get(req);
     connect(rep, SIGNAL(finished()), this, SLOT(ipRequestFinished()));
 }
